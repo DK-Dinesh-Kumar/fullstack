@@ -1,0 +1,35 @@
+.table {
+  border-collapse: collapse;
+  background-color: white;
+}
+.table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: red !important ;
+  color: white;
+  border: 1px solid;
+  text-align: center;
+}
+
+.table td {
+  border: 1px solid;
+}
+.modal {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.modal-content {
+  border-radius: 30px !important;
+}
+.modal-div {
+  display: flex !important;
+  justify-content: center !important;
+  flex-direction: column;
+  align-items: center !important;
+  height: 250px;
+  width: 350px;
+  border-radius: 30px;
+  row-gap: 30px;
+}

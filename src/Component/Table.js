@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  DataRequest } from "../service/api";
+import { DataRequest } from "../service/api";
 import { FormLabel, Input } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -35,7 +35,6 @@ const DashboardTable = () => {
     });
     if (res.data.status === 200) {
       setTableData(res.data.items);
-      console.log("response", res);
     } else {
       setErrorModal(!errorModal);
       res.data.message
@@ -44,7 +43,7 @@ const DashboardTable = () => {
     }
   }
   useEffect(() => {
-    getdata();
+    sessionStorage.getItem("token") ? getdata() : navigate("/");
   }, []);
 
   async function AddItem() {
@@ -59,7 +58,6 @@ const DashboardTable = () => {
         ...newData,
         token: Token,
       });
-      console.log("response", response);
       if (response.status === 200) {
         setNewDataModal(!newDataModal);
       }
@@ -67,7 +65,6 @@ const DashboardTable = () => {
   }
 
   const deleteItem = async (value) => {
-    console.log("valueee", value);
     var res = await DataRequest("delete", tableApiUrl.deleteTabledata, {
       id: value,
       token: Token,
@@ -129,7 +126,15 @@ const DashboardTable = () => {
         </div>
         <div style={{ width: "15%", color: "white" }}>
           <label>Welcome {UserName}</label>
-          <label style={{marginLeft:"5px",cursor:"pointer",textDecoration:"underLine"}} onClick={()=>{navigate("/chat")}}>Chat</label>
+          <label
+            style={{
+              marginLeft: "5px",
+              cursor: "pointer",
+              textDecoration: "underLine",
+            }}
+          >
+            Chat
+          </label>
         </div>
         <div style={{ width: "10%" }}>
           <label
@@ -148,19 +153,12 @@ const DashboardTable = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          backgroundColor: "bisque",
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-evenly",
-          padding: "10px 0",
-        }}
-      >
+      <div className="input-container">
         <FormLabel> Type:</FormLabel>
         <Input
           name="type"
           value={newData.type}
+          placeholder="Enter Type"
           onChange={(e) => {
             setNewData({ ...newData, type: e.target.value });
           }}
@@ -171,6 +169,7 @@ const DashboardTable = () => {
         <Input
           value={newData.company}
           name="company"
+          placeholder="Enter Company"
           onChange={(e) => {
             setNewData({ ...newData, company: e.target.value });
           }}
@@ -178,6 +177,8 @@ const DashboardTable = () => {
         <FormLabel>Modal:</FormLabel>
         <Input
           name="modal"
+          placeholder="Enter Modal"
+          style={{ textAlign: "center" }}
           value={newData.modal}
           onChange={(e) => {
             setNewData({ ...newData, modal: e.target.value });
@@ -186,6 +187,7 @@ const DashboardTable = () => {
         <FormLabel>Color:</FormLabel>
         <Input
           value={newData.color}
+          placeholder="Enter Color"
           onChange={(e) => {
             setNewData({ ...newData, color: e.target.value });
           }}
@@ -193,6 +195,7 @@ const DashboardTable = () => {
         <FormLabel>Cost:</FormLabel>
         <Input
           name="cost"
+          placeholder="Enter Cost"
           value={newData.cost}
           onChange={(e) => {
             setNewData({ ...newData, cost: e.target.value });

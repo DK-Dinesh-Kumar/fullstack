@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-import {
-  Input,
-  FormLabel,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
+import React, { useState,useEffect } from "react";
+import { Input, FormLabel, IconButton, InputAdornment } from "@mui/material";
 import { Button, Modal } from "react-bootstrap";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import {  DataRequest } from "../service/api";
+import { DataRequest } from "../service/api";
 import { userApiUrl } from "../service/request";
+import { GoogleLogin } from "react-google-login";
 
 function Register() {
   const [userName, setUserName] = useState("");
@@ -25,12 +21,10 @@ function Register() {
   const navigate = useNavigate();
 
   const regiterAccount = async () => {
-    console.log("userProfile", userProfile);
 
     function validateEmail(email) {
       var re =
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
-      console.log(re.test(email));
       return re.test(email);
     }
 
@@ -42,8 +36,11 @@ function Register() {
           userEmail: userEmail,
         });
 
-        var res = await DataRequest( "post",userApiUrl.userRegister,userDetails,);
-        console.log("res", res);
+        var res = await DataRequest(
+          "post",
+          userApiUrl.userRegister,
+          userDetails
+        );
         if (res.data.status === 200) {
           setRegisterSuccessModal(!registerSuccessModal);
         } else {
@@ -51,7 +48,7 @@ function Register() {
           setRegisterErrorModal(!registerErrorModal);
         }
       } else {
-        alert("Email is not Valid");
+        alert("Email is not Valid"); 
       }
     }
   };
@@ -59,6 +56,9 @@ function Register() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+
+
   return (
     <div
       style={{
@@ -98,17 +98,15 @@ function Register() {
             color: "white",
           }}
         >
-          <div>
-            <label style={{ color:"white", fontSize: "20px" }}>
+          <div className="d-flex align-items-center">
+            <label style={{ color: "#2a09db", fontSize: "20px" }}>
               Register Your Account Here!
             </label>
           </div>
-          <div className="d-flex align-items-center"></div>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              marginLeft: "20px",
               alignItems: "start",
               rowGap: "10px",
             }}
@@ -117,7 +115,7 @@ function Register() {
             <Input
               type="text"
               value={userName}
-              style={{ width: "260px",color:"white" }}
+              style={{ width: "260px", color: "white" }}
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
@@ -128,7 +126,6 @@ function Register() {
               value={userPassword}
               style={{
                 width: "260px",
-                backgroundColor: "white",
                 paddingRight: "15px",
               }}
               onChange={(e) => {
@@ -153,30 +150,33 @@ function Register() {
             <Input
               type="text"
               value={userEmail}
-              style={{ width: "260px",color:"white" }}
+              style={{ width: "260px", color: "white" }}
               onChange={(e) => {
                 setUserEmail(e.target.value);
               }}
             />
-
-            <input
-              type={"file"}
-              accept="image/png, image/jpeg"
-              onChange={(e) => {
-                setUserProfile(e.target.files[0]);
-              }}
-            />
-            {/* <img
-              style={{ height: "200px", width: "200px" }}
-              alt="Profile"
-              src={userProfile}
-            /> */}
-            <Button
-              style={{ color: "white", width: "260px" }}
-              onClick={regiterAccount}
-            >
-              Sign Up
-            </Button>
+{/* 
+            {userName ? ( */}
+              <Button
+                style={{ color: "white", width: "260px" }}
+                onClick={regiterAccount}
+              >
+                Sign Up
+              </Button>
+            {/* ) : (
+              <GoogleLogin
+                clientId="217581229569-2q0ghetvklo1n09nauudq5mr8uctjv22.apps.googleusercontent.com"
+                buttonText="Sign in with Google"
+                onSuccess={(res) => {
+                  console.log(res);
+                }}
+                onFailure={(res) => {
+                  console.log(res);
+                }}
+                cookiePolicy={"single_host_origin"}
+                
+              />
+            )} */}
             <Modal className="modal" show={registerSuccessModal}>
               <div className="modal-div">
                 <p>Your Account Was Registered Successfully.</p>

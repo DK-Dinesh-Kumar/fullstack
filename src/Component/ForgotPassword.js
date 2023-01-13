@@ -27,7 +27,7 @@ const ForgotPassword = () => {
     const response = await DataRequest("post",userApiUrl.userGenerateOtp, {
       userName: value,
     });
-    console.log("response", response);
+ 
     if (response.data.status === 200) {
       setToken(response.data.token);
       setOtpSended(!otpSended);
@@ -39,14 +39,12 @@ const ForgotPassword = () => {
       token: token,
       userName: user,
     });
-    console.log("response", response);
     if (response.data.status === 200) {
       setOtpVerified(!otpVerified);
     }
   };
   const ChnagePassword = async () => {
     if (newPassword === confirmPassword) {
-      console.log("sucess");
       const response = await DataRequest("post",userApiUrl.userChangePassword, {
         userName: user,
         userPassword: newPassword,
@@ -59,7 +57,6 @@ const ForgotPassword = () => {
         setErrorMessage("Time Expired ");
       }
     } else {
-      console.log("error");
       setErrorModal(!errorModal);
       setErrorMessage("New Password and Confirm Password Must be same");
     }

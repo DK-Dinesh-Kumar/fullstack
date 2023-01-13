@@ -15,7 +15,7 @@ import { userApiUrl } from "../service/request";
 
 function Login() {
   const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [message, setMessage] = useState("");
@@ -29,12 +29,11 @@ function Login() {
       userName: userName,
       userPassword: password,
     });
-    console.log("response", res);
+   
     if (res.data.token) {
       sessionStorage.setItem("token", res.data.token);
-      localStorage.setItem("token", res.data.token);
       sessionStorage.setItem("userName", res.data.result.username);
-      console.log("resss", res.data.token);
+      navigate("/dashboard-table");
     } else if (res.data.status === 401) {
       setOpenModal(!openModal);
       setMessage(res.data.message);
@@ -42,20 +41,19 @@ function Login() {
       setOpenModal(!openModal);
       setMessage(res.data.message);
     }
-    if (sessionStorage.getItem("token")) {
-      navigate("/dashboard-table");
-    }
+
+    // }
   };
   const NavigateForget = () => {
     if (userName !== "") {
       sessionStorage.setItem("userName", userName);
       navigate("/forgotpassowrd");
     } else {
-      alert("Eneter User Name");
+      setOpenModal(!openModal)
+      setMessage("Eneter User Name");
     }
   };
 
-  
   return (
     <div
       style={{
@@ -117,12 +115,12 @@ function Login() {
               rowGap: "10px",
             }}
           >
-            <FormLabel style={{color:"white"}} >User Name:</FormLabel>
+            <FormLabel style={{ color: "white" }}>User Name:</FormLabel>
             <Input
               type="text"
               value={userName}
               name="userName"
-              style={{ width: "260px" ,color:"white"}}
+              style={{ width: "260px", color: "white" }}
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
@@ -132,12 +130,13 @@ function Login() {
                   if (userName !== "" && userName !== null) {
                     form.elements.password.focus();
                   } else {
-                    alert("Please Enter UserName");
+                    setOpenModal(!openModal);
+                    setMessage("Please Enter UserName");
                   }
                 }
               }}
             />
-            <FormLabel style={{color:"white"}} >Password:</FormLabel>
+            <FormLabel style={{ color: "white" }}>Password:</FormLabel>
             <Input
               //  id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
@@ -157,10 +156,12 @@ function Login() {
                     if (password !== "" && password) {
                       loginuser();
                     } else {
-                      alert("Please Enter Password");
+                      setOpenModal(!openModal);
+                      setMessage("Please Enter Password");
                     }
                   } else {
-                    alert("Please Enter UserName");
+                    setOpenModal(!openModal);
+                    setMessage("Please Enter UserName");
                   }
                 }
               }}
@@ -174,14 +175,18 @@ function Login() {
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {showPassword ? <VisibilityOff  style={{color:"white"}}/> : <Visibility style={{color:"white"}}/>}
+                    {showPassword ? (
+                      <VisibilityOff style={{ color: "white" }} />
+                    ) : (
+                      <Visibility style={{ color: "white" }} />
+                    )}
                   </IconButton>
                 </InputAdornment>
               }
             />
             {/* <div style={{display:"flex",justifyContent:"flex-end"}}> */}
             <Link
-              style={{ cursor: "pointer",color:"white" }}
+              style={{ cursor: "pointer", color: "white" }}
               onClick={() => {
                 NavigateForget();
               }}
@@ -191,14 +196,30 @@ function Login() {
             {/* </div> */}
             <Button
               style={{ color: "white", width: "260px" }}
-              onClick={() => loginuser()}
+              onClick={() => {
+                if (userName !== "" && userName !== null) {
+                  if (password !== "" && password) {
+                    loginuser();
+                  } else {
+                    setOpenModal(!openModal);
+                    setMessage("Please Enter Password");
+                  }
+                } else {
+                  setOpenModal(!openModal);
+                  setMessage("Please Enter UserName");
+                }
+              }}
             >
               Login
             </Button>
             <p>
               If you don't have account
               <Link
-                style={{ cursor: "pointer",color:"#c6e51c",marginLeft:"5px" }}
+                style={{
+                  cursor: "pointer",
+                  color: "#c6e51c",
+                  marginLeft: "5px",
+                }}
                 onClick={() => {
                   navigate("/register");
                 }}

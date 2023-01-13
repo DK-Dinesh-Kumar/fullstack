@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const baseurl = "http://localhost:4000/";
+const baseurl = "https://vehicles-data.onrender.com/";
 
 export const DataRequest = async (method, url, postdata) => {
   var Token = sessionStorage.getItem("token");
-  console.log("calling", Token);
+
 
   var data = JSON.stringify(postdata);
   var config = {

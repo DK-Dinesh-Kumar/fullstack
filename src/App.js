@@ -4,21 +4,30 @@ import Login from "./Component/login";
 import Register from "./Component/Register";
 import ForgotPassword from "./Component/ForgotPassword";
 import DashboardTable from "./Component/Table";
-import ChatLog from "./Component/ChatLog";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import ChatLog from "./Component/ChatLog";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React from "react";
 function App() {
   let Token = sessionStorage.getItem("token");
+
   return (
     <div className="App">
-      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/forgotpassowrd" element={<ForgotPassword />} />
-          <Route path="/dashboard-table" element={<DashboardTable />} />
-          <Route path="/chat" element={<ChatLog />}/>
+          <Route
+            path="/forgotpassowrd"
+            element={ <ForgotPassword />  }
+          />
+          <Route
+            path="/dashboard-table"
+            element={<DashboardTable /> }
+          />
+          {/* <Route
+            path="/chat"
+            element={Token ? <ChatLog /> : <Navigate to={"/"} />}
+          /> */}
         </Routes>
       </BrowserRouter>
     </div>
@@ -26,4 +35,3 @@ function App() {
 }
 
 export default App;
-

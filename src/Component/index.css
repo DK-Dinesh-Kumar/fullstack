@@ -33,3 +33,22 @@
   border-radius: 30px;
   row-gap: 30px;
 }
+.input-container {
+  background-color: bisque;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 10px 0;
+  flex-direction: row;
+}
+
+.MuiInputBase-root
+  .MuiInput-root
+  .MuiInput-underline
+  .MuiInputBase-colorPrimary {
+  text-align: center !important;
+}
+.MuiFormLabel-root {
+  color: blue !important;
+}

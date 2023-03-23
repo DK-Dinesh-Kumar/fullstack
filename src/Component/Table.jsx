@@ -61,6 +61,14 @@ const DashboardTable = () => {
       });
       if (response.status === 200) {
         setNewDataModal(!newDataModal);
+        setNewData({
+          type: "",
+          modal: "",
+          cost: "",
+          color: "",
+          company: "",
+          id: "",
+        });
       }
     }
   }

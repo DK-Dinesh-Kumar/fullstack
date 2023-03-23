@@ -5,10 +5,10 @@ import Register from "./Component/Register";
 import ForgotPassword from "./Component/ForgotPassword";
 import DashboardTable from "./Component/Table";
 // import ChatLog from "./Component/ChatLog";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
 function App() {
-  let Token = sessionStorage.getItem("token");
+
 
   return (
     <div className="App">
@@ -24,10 +24,6 @@ function App() {
             path="/dashboard-table"
             element={<DashboardTable /> }
           />
-          {/* <Route
-            path="/chat"
-            element={Token ? <ChatLog /> : <Navigate to={"/"} />}
-          /> */}
         </Routes>
       </BrowserRouter>
     </div>

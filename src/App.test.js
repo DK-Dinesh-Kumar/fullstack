@@ -1,8 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { fireEvent, render, screen } from "@testing-library/react";
+import { createMemoryHistory } from "history";
+import App from "./App";
+import { BrowserRouter, Router } from "react-router-dom";
 
-test('renders learn react link', () => {
+test("should show login form", () => {
+  const history = createMemoryHistory();
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
 });
+

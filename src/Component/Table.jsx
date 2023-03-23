@@ -33,6 +33,7 @@ const DashboardTable = () => {
     var res = await DataRequest("post", tableApiUrl.getTableData, {
       token: Token,
     });
+    console.log("---", res);
     if (res.data.status === 200) {
       setTableData(res.data.items);
     } else {
@@ -204,6 +205,7 @@ const DashboardTable = () => {
         {edit ? (
           <Button
             variant="contained"
+            data-testid="add"
             style={{ width: "80px", backgroundColor: "blue", color: "white" }}
             onClick={AddItem}
           >
@@ -212,6 +214,7 @@ const DashboardTable = () => {
         ) : (
           <Button
             variant="contained"
+            data-testid="update"
             style={{ width: "80px", backgroundColor: "blue", color: "white" }}
             onClick={() => {
               updateData();
@@ -233,46 +236,45 @@ const DashboardTable = () => {
             <th>Cost</th>
           </tr>
         </thead>
-        {
-          //  if (tableData !== null)
-          tableData?.map((item, index) => {
-            return (
-              <tr>
-                <td>{index + 1}</td>
-                <td>{item.type}</td>
-                <td>{item.company}</td>
-                <td>{item.modal}</td>
-                <td>{item.color}</td>
-                <td>{item.cost}</td>
-                <td>
-                  <Button
-                    style={{ width: "100px", backgroundColor: "blue" }}
-                    onClick={(event) => {
-                      EditItem(item);
-                      setEdit(false);
-                      event.target.form.elements.type.focus();
-                    }}
-                  >
-                    <EditIcon />
-                    Edit
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    variant="contained"
-                    style={{ backgroundColor: "green", width: "100px" }}
-                    onClick={() => {
-                      deleteItem(item._id);
-                    }}
-                  >
-                    <DeleteOutlinedIcon />
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            );
-          })
-        }
+        {tableData?.map((item, index) => {
+          return (
+            <tr>
+              <td>{index + 1}</td>
+              <td>{item.type}</td>
+              <td>{item.company}</td>
+              <td>{item.modal}</td>
+              <td>{item.color}</td>
+              <td>{item.cost}</td>
+              <td>
+                <Button
+                  style={{ width: "100px", backgroundColor: "blue" }}
+                  data-testid={`edit-${index}`}
+                  onClick={(event) => {
+                    EditItem(item);
+                    setEdit(false);
+                    event.target.form.elements.type.focus();
+                  }}
+                >
+                  <EditIcon />
+                  Edit
+                </Button>
+              </td>
+              <td>
+                <Button
+                  variant="contained"
+                  style={{ backgroundColor: "green", width: "100px" }}
+                  data-testid={`delete-${index}`}
+                  onClick={() => {
+                    deleteItem(item._id);
+                  }}
+                >
+                  <DeleteOutlinedIcon />
+                  Delete
+                </Button>
+              </td>
+            </tr>
+          );
+        })}
       </table>
       <Modal className="modal" show={newDataModal}>
         <div className="modal-div">
@@ -280,6 +282,7 @@ const DashboardTable = () => {
           <Button
             onClick={() => {
               setNewDataModal(!newDataModal);
+              getdata();
             }}
           >
             OK
@@ -292,6 +295,7 @@ const DashboardTable = () => {
           <Button
             onClick={() => {
               setEditDataModal(!editDataModal);
+              getdata();
             }}
           >
             OK
@@ -304,6 +308,7 @@ const DashboardTable = () => {
           <Button
             onClick={() => {
               setDeleteDataModal(!deleteDataModal);
+              getdata();
             }}
           >
             OK

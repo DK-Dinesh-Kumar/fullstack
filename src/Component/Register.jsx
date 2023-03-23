@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, FormLabel, IconButton, InputAdornment } from "@mui/material";
 import { Button, Modal } from "react-bootstrap";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -17,11 +17,10 @@ function Register() {
   const [registerSuccessModal, setRegisterSuccessModal] = useState(false);
   const [registerErrorModal, setRegisterErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [country, setCountry] = useState("");
   const navigate = useNavigate();
 
   const regiterAccount = async () => {
-
     function validateEmail(email) {
       var re =
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,3}))$/;
@@ -41,6 +40,7 @@ function Register() {
           userApiUrl.userRegister,
           userDetails
         );
+        console.log("Response", res);
         if (res.data.status === 200) {
           setRegisterSuccessModal(!registerSuccessModal);
         } else {
@@ -48,7 +48,8 @@ function Register() {
           setRegisterErrorModal(!registerErrorModal);
         }
       } else {
-        alert("Email is not Valid"); 
+        setRegisterErrorModal(true);
+        setErrorMessage("Email is not Valid");
       }
     }
   };
@@ -56,8 +57,6 @@ function Register() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
-
 
   return (
     <div
@@ -69,16 +68,8 @@ function Register() {
         justifyContent: "center",
       }}
     >
-      {/* <div
-        style={{
-          width: "50%",
-          height: "500px",
-          backgroundImage: `url('https://thumbs.dreamstime.com/b/hexagons-background-abstract-top-rads-server-hardware-concept-information-technology-big-data-152590006.jpg')`,
-        }}
-      ></div> */}
       <div
         style={{
-          // width: "50%",
           alignItems: "center",
           justifyContent: "center",
           display: "flex",
@@ -88,7 +79,6 @@ function Register() {
           style={{
             height: "500px",
             width: "400px",
-            // backgroundColor: "#ff99cc",
             borderRadius: "10px",
             display: "flex",
             flexDirection: "column",
@@ -115,6 +105,7 @@ function Register() {
             <Input
               type="text"
               value={userName}
+              placeholder="Enter Your User Name"
               style={{ width: "260px", color: "white" }}
               onChange={(e) => {
                 setUserName(e.target.value);
@@ -123,6 +114,7 @@ function Register() {
             <FormLabel style={{ color: "white" }}>Password:</FormLabel>
             <Input
               type={showPassword ? "text" : "password"}
+              placeholder="Enter Your Password"
               value={userPassword}
               style={{
                 width: "260px",
@@ -135,6 +127,7 @@ function Register() {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
+                    data-testid={"icon-visible"}
                     onClick={() => {
                       setShowPassword(!showPassword);
                     }}
@@ -150,37 +143,25 @@ function Register() {
             <Input
               type="text"
               value={userEmail}
+              placeholder="Enter Your Email"
               style={{ width: "260px", color: "white" }}
               onChange={(e) => {
                 setUserEmail(e.target.value);
               }}
             />
-{/* 
-            {userName ? ( */}
-              <Button
-                style={{ color: "white", width: "260px" }}
-                onClick={regiterAccount}
-              >
-                Sign Up
-              </Button>
-            {/* ) : (
-              <GoogleLogin
-                clientId="217581229569-2q0ghetvklo1n09nauudq5mr8uctjv22.apps.googleusercontent.com"
-                buttonText="Sign in with Google"
-                onSuccess={(res) => {
-                  console.log(res);
-                }}
-                onFailure={(res) => {
-                  console.log(res);
-                }}
-                cookiePolicy={"single_host_origin"}
-                
-              />
-            )} */}
+
+            <Button
+              style={{ color: "white", width: "260px" }}
+              onClick={regiterAccount}
+            >
+              Sign Up
+            </Button>
+
             <Modal className="modal" show={registerSuccessModal}>
               <div className="modal-div">
                 <p>Your Account Was Registered Successfully.</p>
                 <Button
+                data-testid={'ok'}
                   onClick={() => {
                     setRegisterSuccessModal(!registerSuccessModal);
                     navigate("/");
@@ -195,6 +176,7 @@ function Register() {
                 <h4>!Oops...</h4>
                 <p>{errorMessage}</p>
                 <Button
+                data-testid={'Oops'}
                   onClick={() => {
                     setRegisterErrorModal(!registerErrorModal);
                   }}

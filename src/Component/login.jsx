@@ -29,7 +29,7 @@ function Login() {
       userName: userName,
       userPassword: password,
     });
-   
+    console.log("---- login res", res);
     if (res.data.token) {
       sessionStorage.setItem("token", res.data.token);
       sessionStorage.setItem("userName", res.data.result.username);
@@ -41,16 +41,14 @@ function Login() {
       setOpenModal(!openModal);
       setMessage(res.data.message);
     }
-
-    // }
   };
   const NavigateForget = () => {
     if (userName !== "") {
       sessionStorage.setItem("userName", userName);
       navigate("/forgotpassowrd");
     } else {
-      setOpenModal(!openModal)
-      setMessage("Eneter User Name");
+      setOpenModal(!openModal);
+      setMessage("Enter User Name");
     }
   };
 
@@ -64,13 +62,6 @@ function Login() {
         justifyContent: "center",
       }}
     >
-      {/* <div
-        style={{
-          width: "50%",
-          height: "500px",
-          backgroundImage: `url('https://thumbs.dreamstime.com/b/hexagons-background-abstract-top-rads-server-hardware-concept-information-technology-big-data-152590006.jpg')`,
-        }}
-      ></div> */}
       <div
         style={{
           // width: "50%",
@@ -119,7 +110,9 @@ function Login() {
             <Input
               type="text"
               value={userName}
+              placeholder="Enter Your User Name"
               name="userName"
+              id="userName"
               style={{ width: "260px", color: "white" }}
               onChange={(e) => {
                 setUserName(e.target.value);
@@ -141,6 +134,7 @@ function Login() {
               //  id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
               name="password"
+              placeholder="Enter Your Password"
               value={password}
               style={{
                 width: "260px",
@@ -169,6 +163,7 @@ function Login() {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
+                    data-testid={"icon-visible"}
                     onClick={() => {
                       setShowPassword(!showPassword);
                     }}
@@ -232,6 +227,7 @@ function Login() {
             <div className="modal-div">
               <p>{message}</p>
               <Button
+              data-testid="ok"
                 onClick={() => {
                   setOpenModal(!openModal);
                 }}
